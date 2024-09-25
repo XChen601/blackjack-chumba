@@ -140,7 +140,7 @@ class BlackjackPlayer:
         self.cursor = SystemCursor()
         self.game_coordinates = [(0, 0), (0, 0)]
         self.card_checker = CardChecker()
-        self.rounds = 500
+        self.rounds = 145
         self.curr_round = 0
 
         self.board_img_path = "game_images/full_board.png"
@@ -265,8 +265,9 @@ class BlackjackPlayer:
         width = bottom_right_x - top_left_x
         height = bottom_right_y - top_left_y
 
+        print(f"region = {(top_left_x, top_left_y, width, height)}")
         # Take screenshot of the calculated region
-        screenshot = pyautogui.screenshot(region=(top_left_x, top_left_y, width, height))
+        screenshot = pyautogui.screenshot(region=(int(top_left_x), int(top_left_y), int(width), int(height)))
 
         # Save the screenshot
         screenshot.save(self.board_img_path)
@@ -393,6 +394,7 @@ class BlackjackPlayer:
             self.update_game_images()
             self.update_splitted_hands(self.player_img_path)
             last_hand = hand
+            left_brightness, right_brightness = update_brightness()
 
         time.sleep(2)
         left_brightness, right_brightness = update_brightness()
@@ -413,13 +415,14 @@ class BlackjackPlayer:
             self.update_game_images()
             self.update_splitted_hands(self.player_img_path)
             last_hand = hand
+            left_brightness, right_brightness = update_brightness()
 
         print('finished split')
 
     def get_region(self):
         width = self.game_coordinates[1][0] - self.game_coordinates[0][0]
         height = self.game_coordinates[1][1] - self.game_coordinates[0][1]
-        region = (self.game_coordinates[0][0], self.game_coordinates[0][1], width, height)
+        region = (int(self.game_coordinates[0][0]), int(self.game_coordinates[0][1]), int(width), int(height))
         return region
 
     def click_image(self, image_path):
